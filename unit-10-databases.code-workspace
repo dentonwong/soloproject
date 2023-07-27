@@ -1,0 +1,28 @@
+{
+	"folders": [
+		{
+			"name": "unit-10-databases",
+			"path": "../unit-10-databases"
+		},
+		{
+			"name": "build-tools-module",
+			"path": "../build-tools-module"
+		},
+		{
+			"name": "Solo",
+			"path": "."
+		},
+		{
+			"path": "../unit-12-testing"
+		}
+	],
+	"settings": {
+		"editor.defaultFormatter": "rvest.vs-code-prettier-eslint",
+		"editor.formatOnPaste": false, // required 
+		"editor.formatOnType": false, // required
+		"editor.formatOnSave": true, // optional 
+		"editor.formatOnSaveMode": "file", // required to format on save
+		"files.autoSave": "onFocusChange", // optional but recommended
+		"vs-code-prettier-eslint.prettierLast": true // set as "true" to run 'prettier' last not first
+	}
+}
