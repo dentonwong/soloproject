@@ -1,19 +1,8 @@
 {
 	"folders": [
 		{
-			"name": "unit-10-databases",
-			"path": "../unit-10-databases"
-		},
-		{
-			"name": "build-tools-module",
-			"path": "../build-tools-module"
-		},
-		{
 			"name": "Solo",
 			"path": "."
-		},
-		{
-			"path": "../unit-12-testing"
 		}
 	],
 	"settings": {

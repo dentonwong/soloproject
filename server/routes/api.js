@@ -1,27 +1,29 @@
-const express = require('express');
+const express = require("express");
 
-const controller = require('../controllers/controller');
+const controller = require("../controllers/controller");
 
 const router = express.Router();
 
-router.get('/', controller.getFoodInfo,
-  (req, res) => res.json(res.locals.foodInfo)
+router.get("/", controller.getFoodInfo, (req, res) =>
+  res.json(res.locals.foodInfo)
 );
 
-router.post('/',
-  controller.postFoodInfo,
-  (req, res) => res.json(res.locals.postFoodInfo)
+router.post("/", controller.postFoodInfo, (req, res) =>
+  res.json(res.locals.postFoodInfo)
 );
 
-router.put('/:filter',
-  controller.putFoodInfo,
-  (req, res) => res.json(res.locals.putFoodInfo)
+router.put("/:filter", controller.putFoodInfo, (req, res) =>
+  res.json(res.locals.putFoodInfo)
 );
 
-router.get('/recall',
+router.delete("/:filter", controller.delFoodInfo, (req, res) =>
+  res.json(res.locals.deleted)
+);
+
+router.get(
+  "/recall",
   controller.recallFoodInfo,
   (req, res) => res.json(res.locals.recallFoodInfo) //dummy data for now
 );
-
 
 module.exports = router;

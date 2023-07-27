@@ -11,11 +11,14 @@
 
 import React from "react";
 import ListDisplay from "../components/ListDisplay";
+import RecallList from "../components/RecallList";
+
 //import { connect } from "react-redux";
 //import TotalsDisplay from "../components/TotalsDisplay";
 //import MarketsContainer from "./MarketsContainer";
 //import * as actions from "../actions/actions";
 import CreateList from "../components/createList";
+import DeleteList from "../components/DeleteList";
 
 // const mapStateToProps = ({
 //   markets: { totalCards, totalMarkets, synced },
@@ -32,9 +35,9 @@ import CreateList from "../components/createList";
 const MainContainer = (props) => (
   <div className="container">
     <div className="outerBox">
-      <h1 id="header">Groceries Purchased</h1>
       <ListDisplay />
       <CreateList />
+      <RecallList />
     </div>
   </div>
 );

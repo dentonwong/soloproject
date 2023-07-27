@@ -75,18 +75,55 @@ controller.putFoodInfo = (req, res, next) => {
     });
 };
 
+controller.delFoodInfo = (req, res, next) => {
+  const filter = req.params.filter.split(",");
+  console.log(filter);
+  const sqlStr =
+    "DELETE FROM grocery_items WHERE sale_date = $1 AND store_name = $2 AND item_name = $3 RETURNING *";
+  db.query(sqlStr, [filter[0], filter[1], filter[2]])
+    .then((data) => (res.locals.deleted = data.rows[0]))
+    .then(() => next())
+    .catch((err) => {
+      return next({
+        log: `controller.delFoodInfo ERROR: ${err}`,
+        message: { err: "controller.delFoodInfo query fail" },
+      });
+    });
+};
+
 controller.recallFoodInfo = (req, res, next) => {
   // write code here
+  // const filter = req.params.filter.split(",");
+  // let newStr = filter.join("");
   const sqlStr =
     "SELECT DISTINCT ARRAY_AGG (item_name ORDER By item_name asc) FROM grocery_items;";
   db.query(sqlStr)
     .then((data) => {
+      const concatSearch = data.rows[0].array_agg.join("+OR+");
+      const today = new Date();
+      const todayDate = today.toISOString().split("T")[0];
+      const adjustedDay = new Date(today);
+      adjustedDay.setDate(today.getDate() - 180);
+      const adjustedDate = adjustedDay.toISOString().split("T")[0];
+      console.log(adjustedDate);
       fetch(
-        "https://api.fda.gov/food/enforcement.json?search=product_description:%22lettuce%22+AND+state:%22CA%22+report_date:[20230101+TO+20230725]&limit=50&sort=report_date:desc"
+        `https://api.fda.gov/food/enforcement.json?search=product_description:(${concatSearch})+AND+distribution_pattern:(%22CA%22+OR+%22California%22)+AND+report_date:[${adjustedDate}+TO+${todayDate}]&limit=50&sort=report_date:desc`
       )
         .then((fdaData) => fdaData.json())
         .then((parsedData) => {
-          res.locals.recallFoodInfo = parsedData.results;
+          const arrOfFDA = [];
+          for (const obj of parsedData.results) {
+            arrOfFDA.push({
+              status: obj.status,
+              class: obj.classification,
+              company: obj.recalling_firm,
+              voluntary: obj.voluntary_mandated,
+              desc: obj.product_description,
+              reason: obj.reason_for_recall,
+              code_info: obj.code_info,
+            });
+          }
+          res.locals.recallFoodInfo = arrOfFDA;
           // console.log(res.locals.recallFoodInfo)
         })
         .then(() => next())

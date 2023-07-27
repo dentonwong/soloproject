@@ -1,19 +1,12 @@
-/**
- * ************************************
- *
- * @module  FoodList
- * @author
- * @date
- * @description Simple presentation component that shows a bold label next to plain text
- *
- * ************************************
- */
-
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { selector } from "../slice";
+import DeleteList from "../components/DeleteList";
 
-const FoodList = ({ entries }) => {
-  console.log(new Date(entries[0].sale_date).toDateString());
+const FoodList = ({ entries }, props) => {
+  const dispatch = useDispatch();
+  const { isDelete } = useSelector((state) => state.groceryList);
+  const [highlight, setHighlight] = useState(null);
   const groupedByDate = {};
   const outputArr = [];
   for (let x = 0; x < entries.length; x++) {
@@ -35,22 +28,60 @@ const FoodList = ({ entries }) => {
       ];
     }
   }
-  //store_name: 'Gourmet Grocers', item_name: 'Cheese', quantity: 2, price: '8.90'
-  console.log(groupedByDate);
+
+  function handleClick(index, box) {
+    setHighlight(index);
+    dispatch(selector(box));
+  }
+
   const sorted = Object.keys(groupedByDate).sort((a, b) => a - b);
   console.log(sorted);
   for (let y of sorted) {
     for (let i in groupedByDate[y]) {
+      let currentItem = groupedByDate[y][i];
       outputArr.push(
-        <div className="entry">
-          <p>Date: {y}</p>
-          <p>{`store_name: ${groupedByDate[y][i].store_name}, item_name: ${groupedByDate[y][i].item_name}, quantity: ${groupedByDate[y][i].quantity}, price: ${groupedByDate[y][i].price}`}</p>
+        <div
+          key={`${y}-${i}`}
+          className={`entry ${highlight === `${y}-${i}` ? "highlighted" : ""} ${
+            isDelete === `${y}-${i}` ? "fade-out" : ""
+          }`}
+          onClick={() =>
+            handleClick(`${y}-${i}`, [currentItem, y, `${y}-${i}`])
+          }
+        >
+          <h3>
+            Date: <u>{y}</u>
+          </h3>
+
+          <p>
+            <span className="entrydetails">
+              <strong>Store Name: </strong>
+              {`${currentItem.store_name}`}
+            </span>{" "}
+            <span className="entrydetails">
+              <strong>Item Name: </strong>
+              {`${currentItem.item_name}`}
+            </span>{" "}
+            <span className="entrydetails">
+              <strong>Quantity: </strong>
+              {` ${currentItem.quantity}`}
+            </span>{" "}
+            <span className="entrydetails">
+              <strong>Price per item: </strong>
+              {`$${groupedByDate[y][i].price}`}
+            </span>
+          </p>
         </div>
       );
     }
   }
 
-  return outputArr;
+  return (
+    <>
+      {outputArr}
+      <DeleteList setHighlight={setHighlight} />
+    </>
+  );
 };
 
 export default FoodList;
