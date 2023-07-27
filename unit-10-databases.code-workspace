@@ -3,6 +3,9 @@
 		{
 			"name": "Solo",
 			"path": "."
+		},
+		{
+			"path": "../build-tools-module"
 		}
 	],
 	"settings": {
