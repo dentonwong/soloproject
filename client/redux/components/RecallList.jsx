@@ -25,7 +25,10 @@ const RecallList = (props) => {
       newArr.push(
         <div key={i} className="recallEntry">
           <h3>
-            Seriousness: <u>{recall[i].class}</u>
+            Seriousness:{" "}
+            <u style={recall[i].class === "Class I" ? { color: "red" } : {}}>
+              {recall[i].class}
+            </u>
           </h3>
 
           <p>
@@ -67,11 +70,11 @@ const RecallList = (props) => {
   console.log("recalldisplay", recallDisplay);
   return (
     <div id="recallcontainer">
-      <h2>Recall List </h2>
+      <h2>Recall List (within the last 6 months) </h2>
       <a href="https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts">
         Please visit the FDA site for further details and pictures.
       </a>
-      {recall.length > 0 && recallDisplay}
+      <div className="scrollbox">{recall.length > 0 && recallDisplay}</div>
     </div>
   );
 };
