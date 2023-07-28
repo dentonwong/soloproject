@@ -403,11 +403,11 @@ html ::-webkit-scrollbar-thumb {
 /* Mobile */
 @media screen and (max-width: 600px) {
   .banner {
-    font-size: 5rem;
+    font-size: 12rem;
   }
   .text {
     fill: none;
-    stroke-width: 2;
+    stroke-width: 3;
   }
 }
 
