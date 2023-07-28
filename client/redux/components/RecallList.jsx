@@ -68,6 +68,9 @@ const RecallList = (props) => {
   return (
     <div id="recallcontainer">
       <h2>Recall List </h2>
+      <a href="https://www.fda.gov/safety/recalls-market-withdrawals-safety-alerts">
+        Please visit the FDA site for further details and pictures.
+      </a>
       {recall.length > 0 && recallDisplay}
     </div>
   );
